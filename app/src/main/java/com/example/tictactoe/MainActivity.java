@@ -64,25 +64,31 @@ public class MainActivity extends AppCompatActivity {
                 if (game_state[winning_position[0]] == game_state[winning_position[1]] && game_state[winning_position[1]] == game_state[winning_position[2]] && game_state[winning_position[0]] != 2) {// 2 makes sure the position isnt empty
 
                     //Checks the current player and display them as the winner!
-                    String winner = "";
-                    if (current_player == 1) {
-                        winner = "O";
-                    } else {
-                        winner = "X";
-                    }
-                    //Sets active game to false to prevent further clicking.
-                    active_game = false;
-
-                    //Shows the winner and play again button.
-                    Button play_again = (Button) findViewById(R.id.tryAgainButton);
-                    TextView winner_prompt = (TextView) findViewById(R.id.winnerTextView);
-                    winner_prompt.setText(winner + " has won!");
-                    winner_prompt.setVisibility(View.VISIBLE);
-                    play_again.setVisibility(View.VISIBLE);
+                    winner();
                 }
             }
         }
     }
+
+    //Checks the current player and display them as the winner!
+    public void winner() {
+        String winner = "";
+        if (current_player == 1) {
+            winner = "O";
+        } else {
+            winner = "X";
+        }
+        //Sets active game to false to prevent further clicking.
+        active_game = false;
+
+        //Shows the winner and play again button.
+        Button play_again = (Button) findViewById(R.id.tryAgainButton);
+        TextView winner_prompt = (TextView) findViewById(R.id.winnerTextView);
+        winner_prompt.setText(winner + " has won!");
+        winner_prompt.setVisibility(View.VISIBLE);
+        play_again.setVisibility(View.VISIBLE);
+    }
+
 
     //Play game again function that restarts the game by resetting the board.
     public void playAgain(View view) {
@@ -91,23 +97,33 @@ public class MainActivity extends AppCompatActivity {
         TextView winner_prompt = (TextView) findViewById(R.id.winnerTextView);
         winner_prompt.setVisibility(View.INVISIBLE);
         play_again.setVisibility(View.INVISIBLE);
-        GridLayout gridLayout = (GridLayout) findViewById(R.id.gridLayout);
 
         //Loops through the grid to clear the images(X and O).
-        for(int i = 0; i < gridLayout.getChildCount(); ++i) {
-            ImageView image = (ImageView) gridLayout.getChildAt(i);
-            image.setImageDrawable(null);
-        }
+        clearGrid();
 
         //Loops through game_states and reset to 2(empty).
-        for(int i = 0; i < game_state.length; ++i) {
-            game_state[i] = 2;
-        }
+        resetGameState();
 
         //Sets new current player
         current_player = rand.nextInt(2);
         //sets active game to true
         active_game = true;
+    }
+
+    //Loops through game_states and reset to 2(empty).
+    public void resetGameState() {
+        for(int i = 0; i < game_state.length; ++i) {
+            game_state[i] = 2;
+        }
+    }
+
+    //Loops through the grid to clear the images(X and O).
+    public void clearGrid() {
+        GridLayout gridLayout = (GridLayout) findViewById(R.id.gridLayout);
+        for(int i = 0; i < gridLayout.getChildCount(); ++i) {
+            ImageView image = (ImageView) gridLayout.getChildAt(i);
+            image.setImageDrawable(null);
+        }
     }
 
     @Override
